@@ -1,29 +1,77 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!DOCTYPE html> <!-- HTML5 文档声明 -->
+<html lang="zh-CN"> <!-- 页面语言：中文 -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>待办清单</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8"> <!-- 编码，支持中文 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 移动端适配 -->
+    <title>待办清单</title> <!-- 标签页标题 -->
+    <link rel="stylesheet" href="style.css"> <!-- 引入 CSS：style.css -->
 </head>
-<body>
+<body> <!-- → CSS: body {} 页面背景、居中布局 -->
 
+    <!-- → CSS: .card {} 白色卡片 -->
     <div class="card">
+
+        <!-- → CSS: h1 {} 标题样式 -->
         <h1>📋 待办清单</h1>
 
+        <!-- → CSS: .input-area {} 输入区域横向排列 -->
         <div class="input-area">
+
+            <!--
+              type="text"        → 文本输入框
+              id="taskInput"     → JS 通过这个 id 获取输入内容
+              placeholder        → 灰色占位提示文字
+              autocomplete="off" → 关闭浏览器历史记录下拉
+              → CSS: .input-area input {}      输入框样式
+              → CSS: .input-area input:focus {} 聚焦时边框变蓝
+            -->
             <input type="text" id="taskInput" placeholder="输入新任务..." autocomplete="off">
+
+            <!--
+              id="addBtn" → JS 绑定点击事件
+              → CSS: button {}       蓝色按钮
+              → CSS: button:hover {} 鼠标悬停变深蓝
+            -->
             <button id="addBtn">添加</button>
+
         </div>
 
+        <!--
+          id="taskList" → JS 用事件委托在这里统一监听所有按钮点击
+          → CSS: .task-list {} 去掉列表默认符号
+        -->
         <ul class="task-list" id="taskList">
+
+            <!-- 第 1 条（已完成状态） -->
+            <!-- → CSS: .task-list li {}      每条任务的背景和布局 -->
+            <!-- → CSS: .task-list li:hover {} 鼠标悬停高亮 -->
             <li>
+                <!-- class="done" → 标记已完成，显示删除线 -->
+                <!-- → CSS: .task-text {}      任务文字 -->
+                <!-- → CSS: .task-text.done {}  删除线 + 变灰 -->
                 <span class="task-text done">学习 CSS 基础</span>
+
+                <!-- → CSS: .task-actions {} 按钮容器 -->
                 <div class="task-actions">
+
+                    <!--
+                      class="toggle-btn" → JS 判断：点击后切换 done 类名
+                      → CSS: .toggle-btn {}       绿色圆形按钮
+                      → CSS: .toggle-btn:hover {}  悬停变深绿
+                    -->
                     <button class="toggle-btn" title="标记完成/未完成">✓</button>
+
+                    <!--
+                      class="delete-btn" → JS 判断：点击后删除整条任务
+                      → CSS: .delete-btn {}       红色圆形按钮
+                      → CSS: .delete-btn:hover {}  悬停变深红
+                    -->
                     <button class="delete-btn" title="删除">✕</button>
+
                 </div>
             </li>
+
+            <!-- 第 2 条（未完成） -->
             <li>
                 <span class="task-text">完成待办清单项目</span>
                 <div class="task-actions">
@@ -31,6 +79,8 @@
                     <button class="delete-btn" title="删除">✕</button>
                 </div>
             </li>
+
+            <!-- 第 3 条（未完成） -->
             <li>
                 <span class="task-text">学习 JavaScript 交互</span>
                 <div class="task-actions">
@@ -38,22 +88,28 @@
                     <button class="delete-btn" title="删除">✕</button>
                 </div>
             </li>
+
         </ul>
 
+        <!-- → CSS: .hint {} 灰色小字 -->
         <p class="hint">点击 ✓ 标记完成，点击 ✕ 删除任务</p>
+
     </div>
 
+    <!-- ===== JavaScript ===== -->
     <script>
-        const taskInput = document.getElementById('taskInput');
-        const addBtn = document.getElementById('addBtn');
-        const taskList = document.getElementById('taskList');
+        // --- 获取页面元素 ---
+        const taskInput = document.getElementById('taskInput'); // 输入框
+        const addBtn    = document.getElementById('addBtn');    // 添加按钮
+        const taskList  = document.getElementById('taskList');  // 任务列表容器
 
-        // 添加任务
+        // --- 添加新任务 ---
         function addTask() {
-            const text = taskInput.value.trim();
-            if (!text) return;
+            const text = taskInput.value.trim(); // trim() 去掉首尾空格
+            if (!text) return; // 空内容则退出
 
-            const li = document.createElement('li');
+            const li = document.createElement('li'); // 创建新的 <li>
+            // 设置 li 的内部 HTML（escapeHtml 防止恶意代码注入）
             li.innerHTML = `
                 <span class="task-text">${escapeHtml(text)}</span>
                 <div class="task-actions">
@@ -62,36 +118,42 @@
                 </div>
             `;
 
-            taskList.appendChild(li);
-            taskInput.value = '';
-            taskInput.focus();
+            taskList.appendChild(li); // 插入到列表末尾
+            taskInput.value = '';     // 清空输入框
+            taskInput.focus();        // 光标回到输入框
         }
 
-        // HTML 转义
+        // --- 安全转义：把用户输入转成纯文本，防止 XSS 攻击 ---
         function escapeHtml(str) {
             const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
+            div.textContent = str; // textContent 自动转义特殊字符
+            return div.innerHTML;  // 取出安全字符串
         }
 
-        // 事件委托：切换完成状态 / 删除
+        // --- 事件委托：监听整个列表的点击 ---
+        // 原理：点击 li 内的按钮，事件会"冒泡"到父级 ul
+        // 好处：新添加的按钮不用单独绑定，自动响应
         taskList.addEventListener('click', function(e) {
-            const btn = e.target;
+            const btn = e.target; // 实际被点击的元素
 
+            // 点击 ✓ → 切换任务完成状态
             if (btn.classList.contains('toggle-btn')) {
+                // 找到按钮所在的 li，再找到里面的 .task-text
                 const taskText = btn.closest('li').querySelector('.task-text');
+                // toggle: 有 done 类就移除，没有就添加
                 taskText.classList.toggle('done');
             }
 
+            // 点击 ✕ → 删除整条任务
             if (btn.classList.contains('delete-btn')) {
-                btn.closest('li').remove();
+                btn.closest('li').remove(); // 从 DOM 中移除
             }
         });
 
-        // 按钮点击
+        // --- 点击添加按钮 → 调用 addTask ---
         addBtn.addEventListener('click', addTask);
 
-        // 回车添加
+        // --- 在输入框按回车 → 也调用 addTask ---
         taskInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') addTask();
         });

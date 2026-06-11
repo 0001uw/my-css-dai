@@ -1,7 +1,7 @@
 /* 页面背景 */
 body {
-    /* 渐变色：从左上角到右下角，蓝紫色过渡 */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* 蓝绿渐变：深海蓝 → 青碧色，高级感 */
+    background: linear-gradient(135deg, #0369a1 0%, #0d9488 50%, #2dd4bf 100%);
     font-family: 'Segoe UI', sans-serif;
     display: flex;
     justify-content: center;
@@ -35,6 +35,7 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* 输入框 */
 .input-area input {
     flex: 1;
     padding: 10px 15px;
@@ -46,6 +47,7 @@ h1 {
     outline: none;
 }
 
+/* 输入框获得焦点时 */
 .input-area input:focus {
     border-color: #007bff;
 }
@@ -63,6 +65,7 @@ button {
     transition: background 0.3s;
 }
 
+/* 按钮悬停效果 */
 button:hover {
     background-color: #0056b3;
 }
@@ -74,6 +77,7 @@ button:hover {
     margin: 0;
 }
 
+/* 每条任务 */
 .task-list li {
     display: flex;
     align-items: center;
@@ -85,6 +89,7 @@ button:hover {
     transition: background 0.3s;
 }
 
+/* 任务悬停高亮 */
 .task-list li:hover {
     background-color: #e9ecef;
 }
@@ -96,6 +101,7 @@ button:hover {
     word-break: break-all;
 }
 
+/* 已完成任务（删除线 + 灰色） */
 .task-text.done {
     text-decoration: line-through;
     color: #999;
@@ -109,6 +115,7 @@ button:hover {
     margin-left: 10px;
 }
 
+/* 操作按钮通用样式（圆形） */
 .toggle-btn,
 .delete-btn {
     width: 30px;
@@ -121,18 +128,22 @@ button:hover {
     justify-content: center;
 }
 
+/* 完成按钮（绿色） */
 .toggle-btn {
     background-color: #28a745;
 }
 
+/* 完成按钮悬停 */
 .toggle-btn:hover {
     background-color: #1e7e34;
 }
 
+/* 删除按钮（红色） */
 .delete-btn {
     background-color: #dc3545;
 }
 
+/* 删除按钮悬停 */
 .delete-btn:hover {
     background-color: #bd2130;
 }
