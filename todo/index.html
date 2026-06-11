@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待办清单</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card">
+        <h1>📋 待办清单</h1>
+
+        <div class="input-area">
+            <input type="text" id="taskInput" placeholder="输入新任务..." autocomplete="off">
+            <button id="addBtn">添加</button>
+        </div>
+
+        <ul class="task-list" id="taskList">
+            <li>
+                <span class="task-text done">学习 CSS 基础</span>
+                <div class="task-actions">
+                    <button class="toggle-btn" title="标记完成/未完成">✓</button>
+                    <button class="delete-btn" title="删除">✕</button>
+                </div>
+            </li>
+            <li>
+                <span class="task-text">完成待办清单项目</span>
+                <div class="task-actions">
+                    <button class="toggle-btn" title="标记完成/未完成">✓</button>
+                    <button class="delete-btn" title="删除">✕</button>
+                </div>
+            </li>
+            <li>
+                <span class="task-text">学习 JavaScript 交互</span>
+                <div class="task-actions">
+                    <button class="toggle-btn" title="标记完成/未完成">✓</button>
+                    <button class="delete-btn" title="删除">✕</button>
+                </div>
+            </li>
+        </ul>
+
+        <p class="hint">点击 ✓ 标记完成，点击 ✕ 删除任务</p>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const addBtn = document.getElementById('addBtn');
+        const taskList = document.getElementById('taskList');
+
+        // 添加任务
+        function addTask() {
+            const text = taskInput.value.trim();
+            if (!text) return;
+
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span class="task-text">${escapeHtml(text)}</span>
+                <div class="task-actions">
+                    <button class="toggle-btn" title="标记完成/未完成">✓</button>
+                    <button class="delete-btn" title="删除">✕</button>
+                </div>
+            `;
+
+            taskList.appendChild(li);
+            taskInput.value = '';
+            taskInput.focus();
+        }
+
+        // HTML 转义
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // 事件委托：切换完成状态 / 删除
+        taskList.addEventListener('click', function(e) {
+            const btn = e.target;
+
+            if (btn.classList.contains('toggle-btn')) {
+                const taskText = btn.closest('li').querySelector('.task-text');
+                taskText.classList.toggle('done');
+            }
+
+            if (btn.classList.contains('delete-btn')) {
+                btn.closest('li').remove();
+            }
+        });
+
+        // 按钮点击
+        addBtn.addEventListener('click', addTask);
+
+        // 回车添加
+        taskInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') addTask();
+        });
+    </script>
+
+</body>
+</html>

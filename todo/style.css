@@ -1,0 +1,147 @@
+/* 页面背景 */
+body {
+    /* 渐变色：从左上角到右下角，蓝紫色过渡 */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* 卡片容器 */
+.card {
+    background-color: white;
+    width: 400px;
+    max-width: 100%;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 标题 */
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 输入区域 */
+.input-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.3s;
+    outline: none;
+}
+
+.input-area input:focus {
+    border-color: #007bff;
+}
+
+/* 按钮通用 */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* 任务列表 */
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.task-list li:hover {
+    background-color: #e9ecef;
+}
+
+/* 任务文字 */
+.task-text {
+    font-size: 15px;
+    color: #333;
+    word-break: break-all;
+}
+
+.task-text.done {
+    text-decoration: line-through;
+    color: #999;
+}
+
+/* 任务操作按钮 */
+.task-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.toggle-btn,
+.delete-btn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-btn {
+    background-color: #28a745;
+}
+
+.toggle-btn:hover {
+    background-color: #1e7e34;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #bd2130;
+}
+
+/* 底部提示 */
+.hint {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    margin-top: 20px;
+    margin-bottom: 0;
+}

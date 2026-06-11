@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(c:\\Users\\为王下葬\\.vscode\\extensions\\qwenlm.qwen-code-vscode-ide-companion-0.16.0-win32-x64\\dist\\qwen-cli\\bundled\\qc-helper\\docs\\reference/**)",
+      "Read(c:\\Users\\为王下葬\\.vscode\\extensions\\qwenlm.qwen-code-vscode-ide-companion-0.16.0-win32-x64\\dist\\qwen-cli\\bundled\\qc-helper\\docs/**)"
+    ]
+  },
+  "$version": 4
+}
