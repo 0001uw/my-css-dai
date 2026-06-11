@@ -25,7 +25,16 @@ body {
 h1 {
     color: #333;
     text-align: center;
+    margin-bottom: 10px;
+}
+
+/* 实时时钟 */
+.clock {
+    text-align: center;
+    font-size: 14px;
+    color: #888;
     margin-bottom: 20px;
+    font-family: 'Consolas', 'Courier New', monospace; /* 等宽字体，数字对齐更好看 */
 }
 
 /* 输入区域 */
