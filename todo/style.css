@@ -165,3 +165,27 @@ button:hover {
     margin-top: 20px;
     margin-bottom: 0;
 }
+
+/* 底部导航按钮 */
+.nav-text-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    font-family: inherit;
+}
+.nav-text-btn:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.6);
+    transform: scale(1.05);
+}

@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 文本属性</title>
+    <link rel="stylesheet" href="style.css">
+<style>
+    body.text-page { background: linear-gradient(135deg, #4f46e5, #7c3aed, #a855f7); min-height: 100vh; display: block; padding: 30px 20px; }
+    .text-page .page-header { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; max-width: 860px; margin-left: auto; margin-right: auto; }
+    .text-page .back-btn { background: rgba(255,255,255,0.2); color: #fff; border: 2px solid rgba(255,255,255,0.4); padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 15px; transition: all .3s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .text-page .back-btn:hover { background: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.7); }
+    .text-page h1 { color: #fff; text-align: center; margin: 0; font-size: 28px; text-shadow: 0 2px 8px rgba(0,0,0,.2); }
+    .text-page .subtitle { color: rgba(255,255,255,0.8); text-align: center; max-width: 860px; margin: 0 auto 30px; font-size: 15px; line-height: 1.6; }
+    .props-grid { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; padding-bottom: 40px; }
+    .prop-card { background: #fff; border-radius: 14px; padding: 24px 28px; box-shadow: 0 4px 20px rgba(0,0,0,.08); transition: box-shadow .3s; }
+    .prop-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,.13); }
+    .prop-card .prop-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+    .prop-card .prop-name { font-family: Consolas, Courier New, monospace; font-size: 18px; font-weight: 700; color: #4f46e5; background: #eef2ff; padding: 2px 10px; border-radius: 6px; }
+    .prop-card .prop-desc { font-size: 14px; color: #666; }
+    .prop-card .prop-demo { padding: 14px 18px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 10px; min-height: 32px; line-height: 1.6; }
+    .prop-card .prop-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
+    .prop-card .prop-controls label { font-size: 13px; color: #555; display: flex; align-items: center; gap: 4px; }
+    .prop-card .prop-controls select, .prop-card .prop-controls input[type="range"], .prop-card .prop-controls input[type="color"] { padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; background: #fff; cursor: pointer; }
+    .prop-card .prop-controls input[type="range"] { width: 120px; }
+    .prop-card .prop-controls input[type="color"] { width: 36px; height: 32px; padding: 2px; }
+    .prop-card .value-label { font-family: Consolas, Courier New, monospace; font-size: 12px; color: #888; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; }
+    .prop-card .code-snippet { font-family: Consolas, Courier New, monospace; font-size: 13px; color: #1e293b; background: #f1f5f9; padding: 8px 12px; border-radius: 6px; margin-top: 10px; border-left: 3px solid #4f46e5; }
+    @media (max-width: 600px) { .text-page .page-header { flex-direction: column; align-items: flex-start; } .prop-card { padding: 18px 16px; } .prop-card .prop-controls { flex-direction: column; align-items: flex-start; } }
+</style>
+</head>
+<body class="text-page">
+    <div class="page-header">
+        <a href="index.html" class="back-btn">← 返回</a>
+        <h1>CSS 文本属性</h1>
+    </div>
+    <p class="subtitle">以下每个卡片演示一个 CSS 文本属性，拖动滑块或选择下拉菜单可以实时查看效果</p>
+    <div class="props-grid">
+        <!-- 1. color -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">color</span>
+                <span class="prop-desc">设置文本颜色</span>
+            </div>
+            <div class="prop-demo" id="color-demo" style="color:#4f46e5;">
+                这是一段彩色文字，试试改变我的颜色吧！
+            </div>
+            <div class="prop-controls">
+                <label>颜色：<input type="color" value="#4f46e5" id="color-picker"></label>
+                <span class="value-label" id="color-val">#4f46e5</span>
+            </div>
+            <div class="code-snippet">color: <span id="color-code">#4f46e5</span>;</div>
+        </div>
+
+        <!-- 2. direction -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">direction</span>
+                <span class="prop-desc">设置文本方向</span>
+            </div>
+            <div class="prop-demo" id="direction-demo" style="direction:ltr;">
+                → 从左到右（LTR）Hello World，你好世界！
+            </div>
+            <div class="prop-controls">
+                <select id="direction-select">
+                    <option value="ltr">ltr（左到右）</option>
+                    <option value="rtl">rtl（右到左）</option>
+                </select>
+                <span class="value-label" id="direction-val">direction: ltr</span>
+            </div>
+            <div class="code-snippet">direction: ltr;</div>
+        </div>
+
+        <!-- 3. letter-spacing -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">letter-spacing</span>
+                <span class="prop-desc">设置字符间距</span>
+            </div>
+            <div class="prop-demo" id="letter-demo" style="letter-spacing:0px;">
+                每一个字符之间的距离
+            </div>
+            <div class="prop-controls">
+                <label>间距：<input type="range" min="-4" max="16" value="0" class="range-slider" data-target="letter-demo" data-prop="letterSpacing" data-unit="px"></label>
+                <span class="value-label" data-for="letter-demo">0px</span>
+            </div>
+            <div class="code-snippet">letter-spacing: <span data-code-for="letter-demo">0px</span>;</div>
+        </div>
+
+        <!-- 4. line-height -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">line-height</span>
+                <span class="prop-desc">设置行高</span>
+            </div>
+            <div class="prop-demo" id="lineheight-demo" style="line-height:1.6;">
+                行高控制的是行与行之间的垂直间距。<br>
+                这是第二行文字，当行高值变大时，两行之间的距离会增大。<br>
+                试试拖动滑块调整行高，观察每一行之间的空隙变化。
+            </div>
+            <div class="prop-controls">
+                <label>行高：<input type="range" min="0.8" max="3.0" step="0.1" value="1.6" class="range-slider" data-target="lineheight-demo" data-prop="lineHeight" data-unit=""></label>
+                <span class="value-label" data-for="lineheight-demo">1.6</span>
+            </div>
+            <div class="code-snippet">line-height: <span data-code-for="lineheight-demo">1.6</span>;</div>
+        </div>
+
+        <!-- 5. text-align -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">text-align</span>
+                <span class="prop-desc">对齐元素中的文本</span>
+            </div>
+            <div class="prop-demo" id="align-demo" style="text-align:left;">
+                这段文字的对齐方式会随着你的选择而变化。text-align 控制文本在容器中的水平对齐方式，常用值有 left、center、right、justify。
+            </div>
+            <div class="prop-controls">
+                <select id="align-select">
+                    <option value="left">left（左对齐）</option>
+                    <option value="center">center（居中）</option>
+                    <option value="right">right（右对齐）</option>
+                    <option value="justify">justify（两端对齐）</option>
+                </select>
+                <span class="value-label" id="align-val">text-align: left</span>
+            </div>
+            <div class="code-snippet">text-align: left;</div>
+        </div>
+        <!-- 6. text-decoration -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">text-decoration</span>
+                <span class="prop-desc">向文本添加修饰（下划线、删除线等）</span>
+            </div>
+            <div class="prop-demo" id="deco-demo" style="text-decoration:none;">
+                这段文字可以添加下划线、上划线或删除线
+            </div>
+            <div class="prop-controls">
+                <select id="deco-select">
+                    <option value="none">none（无修饰）</option>
+                    <option value="underline">underline（下划线）</option>
+                    <option value="overline">overline（上划线）</option>
+                    <option value="line-through">line-through（删除线）</option>
+                    <option value="underline overline">underline+overline（下划线+上划线）</option>
+                </select>
+                <span class="value-label" id="deco-val">text-decoration: none</span>
+            </div>
+            <div class="code-snippet">text-decoration: none;</div>
+        </div>
+
+        <!-- 7. text-indent -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">text-indent</span>
+                <span class="prop-desc">缩进元素中文本的首行</span>
+            </div>
+            <div class="prop-demo" id="indent-demo" style="text-indent:0px;">
+                这段文字的第一行设置了首行缩进。首行缩进在中文排版中很常见，通常段落首行会缩进 2 个汉字（约 2em）。调整滑块看看效果，注意只有第一行被缩进，后面的行不受影响。
+            </div>
+            <div class="prop-controls">
+                <label>缩进：<input type="range" min="0" max="80" value="0" class="range-slider" data-target="indent-demo" data-prop="textIndent" data-unit="px"></label>
+                <span class="value-label" data-for="indent-demo">0px</span>
+            </div>
+            <div class="code-snippet">text-indent: <span data-code-for="indent-demo">0px</span>;</div>
+        </div>
+
+        <!-- 8. text-shadow -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">text-shadow</span>
+                <span class="prop-desc">设置文本阴影</span>
+            </div>
+            <div class="prop-demo" id="shadow-demo" style="text-shadow:2px 2px 4px #888888;font-size:24px;font-weight:700;">
+                文字阴影效果
+            </div>
+            <div class="prop-controls" id="shadow-controls">
+                <label>偏移X：<input type="range" min="0" max="10" value="2" class="shadow-x"></label>
+                <label>偏移Y：<input type="range" min="0" max="10" value="2" class="shadow-y"></label>
+                <label>模糊：<input type="range" min="0" max="12" value="4" class="shadow-blur"></label>
+                <label>颜色：<input type="color" value="#888888" class="shadow-color"></label>
+                <span class="value-label" id="shadow-val">2px 2px 4px #888888</span>
+            </div>
+            <div class="code-snippet">text-shadow: <span id="shadow-code">2px 2px 4px #888888</span>;</div>
+        </div>
+
+        <!-- 9. text-transform -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">text-transform</span>
+                <span class="prop-desc">控制元素中的字母大小写</span>
+            </div>
+            <div class="prop-demo" id="transform-demo" style="text-transform:none;">
+                hello world! css is fun. 中文不受影响。
+            </div>
+            <div class="prop-controls">
+                <select id="transform-select">
+                    <option value="none">none（保持原样）</option>
+                    <option value="uppercase">uppercase（全部大写）</option>
+                    <option value="lowercase">lowercase（全部小写）</option>
+                    <option value="capitalize">capitalize（首字母大写）</option>
+                </select>
+                <span class="value-label" id="transform-val">text-transform: none</span>
+            </div>
+            <div class="code-snippet">text-transform: none;</div>
+        </div>
+
+        <!-- 10. unicode-bidi -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">unicode-bidi</span>
+                <span class="prop-desc">与 direction 配合，控制双向文本的覆盖行为</span>
+            </div>
+            <div class="prop-demo" id="bidi-demo" style="direction:rtl;unicode-bidi:normal;">
+                ABC 你好 123  DEF 世界 456
+            </div>
+            <div class="prop-controls">
+                <select id="bidi-select">
+                    <option value="normal">normal（常规）</option>
+                    <option value="embed">embed（嵌入）</option>
+                    <option value="bidi-override">bidi-override（强制覆盖）</option>
+                </select>
+                <span class="value-label" id="bidi-val">unicode-bidi: normal</span>
+            </div>
+            <div class="code-snippet">unicode-bidi: normal;</div>
+        </div>
+        <!-- 11. vertical-align -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">vertical-align</span>
+                <span class="prop-desc">设置元素的垂直对齐方式（行内元素或表格单元格）</span>
+            </div>
+            <div class="prop-demo" id="valign-demo" style="font-size:24px;">
+                X<span id="valign-target" style="font-size:16px;vertical-align:baseline;">下标</span>X
+                <span style="font-size:14px;color:#888;">（关注「下标」二字的位置变化）</span>
+            </div>
+            <div class="prop-controls">
+                <select id="valign-select">
+                    <option value="baseline">baseline（基线对齐）</option>
+                    <option value="top">top（顶部对齐）</option>
+                    <option value="middle">middle（居中对齐）</option>
+                    <option value="bottom">bottom（底部对齐）</option>
+                    <option value="text-top">text-top（文字顶部）</option>
+                    <option value="text-bottom">text-bottom（文字底部）</option>
+                    <option value="super">super（上标）</option>
+                    <option value="sub">sub（下标）</option>
+                </select>
+                <span class="value-label" id="valign-val">vertical-align: baseline</span>
+            </div>
+            <div class="code-snippet">vertical-align: baseline;</div>
+        </div>
+
+        <!-- 12. white-space -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">white-space</span>
+                <span class="prop-desc">设置元素中空白（空格、换行）的处理方式</span>
+            </div>
+            <div class="prop-demo" id="whitespace-demo" style="white-space:normal;">
+                这段文字包含     多个空格
+                和
+                换行。
+                不同 white-space 值会以不同方式处理它们。
+            </div>
+            <div class="prop-controls">
+                <select id="whitespace-select">
+                    <option value="normal">normal（合并空格，自动换行）</option>
+                    <option value="nowrap">nowrap（合并空格，不换行）</option>
+                    <option value="pre">pre（保留空格和换行）</option>
+                    <option value="pre-wrap">pre-wrap（保留空格换行，自动换行）</option>
+                    <option value="pre-line">pre-line（合并空格，保留换行）</option>
+                </select>
+                <span class="value-label" id="whitespace-val">white-space: normal</span>
+            </div>
+            <div class="code-snippet">white-space: normal;</div>
+        </div>
+
+        <!-- 13. word-spacing -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">word-spacing</span>
+                <span class="prop-desc">设置单词之间的间距</span>
+            </div>
+            <div class="prop-demo" id="wordspacing-demo" style="word-spacing:0px;">
+                Hello World! CSS is awesome. 中文 词语 间距 也受 影响。
+            </div>
+            <div class="prop-controls">
+                <label>间距：<input type="range" min="-6" max="24" value="0" class="range-slider" data-target="wordspacing-demo" data-prop="wordSpacing" data-unit="px"></label>
+                <span class="value-label" data-for="wordspacing-demo">0px</span>
+            </div>
+            <div class="code-snippet">word-spacing: <span data-code-for="wordspacing-demo">0px</span>;</div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. color picker
+        document.getElementById('color-picker').addEventListener('input', function() {
+            var v = this.value;
+            document.getElementById('color-demo').style.color = v;
+            document.getElementById('color-val').textContent = v;
+            document.getElementById('color-code').textContent = v;
+        });
+
+        // 2. direction select
+        document.getElementById('direction-select').addEventListener('change', function() {
+            var d = document.getElementById('direction-demo');
+            var v = this.value;
+            d.style.direction = v;
+            d.innerHTML = (v === 'ltr' ? '&rarr; 从左到右（LTR）Hello World，你好世界！' : '&larr; 从右到左（RTL）Hello World，你好世界！');
+            document.getElementById('direction-val').textContent = 'direction: ' + v;
+        });
+
+        // 3. range sliders (generic)
+        document.querySelectorAll('.range-slider').forEach(function(slider) {
+            slider.addEventListener('input', function() {
+                var target = document.getElementById(this.dataset.target);
+                var prop = this.dataset.prop;
+                var unit = this.dataset.unit;
+                var val = this.value + unit;
+                target.style[prop] = val;
+                var label = document.querySelector('[data-for="' + this.dataset.target + '"]');
+                if (label) label.textContent = val;
+                var code = document.querySelector('[data-code-for="' + this.dataset.target + '"]');
+                if (code) code.textContent = val;
+            });
+        });
+
+        // 4. text-align select
+        document.getElementById('align-select').addEventListener('change', function() {
+            document.getElementById('align-demo').style.textAlign = this.value;
+            document.getElementById('align-val').textContent = 'text-align: ' + this.value;
+        });
+
+        // 5. text-decoration select
+        document.getElementById('deco-select').addEventListener('change', function() {
+            document.getElementById('deco-demo').style.textDecoration = this.value;
+            document.getElementById('deco-val').textContent = 'text-decoration: ' + this.value;
+        });
+
+        // 6. text-shadow controls
+        function updateShadow() {
+            var ct = document.getElementById('shadow-controls');
+            var x = ct.querySelector('.shadow-x').value;
+            var y = ct.querySelector('.shadow-y').value;
+            var b = ct.querySelector('.shadow-blur').value;
+            var c = ct.querySelector('.shadow-color').value;
+            var v = x + 'px ' + y + 'px ' + b + 'px ' + c;
+            document.getElementById('shadow-demo').style.textShadow = v;
+            document.getElementById('shadow-val').textContent = v;
+            document.getElementById('shadow-code').textContent = v;
+        }
+        document.getElementById('shadow-controls').querySelectorAll('input').forEach(function(el) {
+            el.addEventListener('input', updateShadow);
+        });
+
+        // 7. text-transform select
+        document.getElementById('transform-select').addEventListener('change', function() {
+            document.getElementById('transform-demo').style.textTransform = this.value;
+            document.getElementById('transform-val').textContent = 'text-transform: ' + this.value;
+        });
+
+        // 8. unicode-bidi select
+        document.getElementById('bidi-select').addEventListener('change', function() {
+            document.getElementById('bidi-demo').style.unicodeBidi = this.value;
+            document.getElementById('bidi-val').textContent = 'unicode-bidi: ' + this.value;
+        });
+
+        // 9. vertical-align select
+        document.getElementById('valign-select').addEventListener('change', function() {
+            document.getElementById('valign-target').style.verticalAlign = this.value;
+            document.getElementById('valign-val').textContent = 'vertical-align: ' + this.value;
+        });
+
+        // 10. white-space select
+        document.getElementById('whitespace-select').addEventListener('change', function() {
+            document.getElementById('whitespace-demo').style.whiteSpace = this.value;
+            document.getElementById('whitespace-val').textContent = 'white-space: ' + this.value;
+        });
+    </script>
+</body>
+</html>
