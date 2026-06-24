@@ -1,0 +1,406 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 盒子模型</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.box-page {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #020617 100%);
+            min-height: 100vh;
+            display: block;
+            padding: 30px 20px;
+        }
+        .box-page .page-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; max-width: 860px; margin-left: auto; margin-right: auto; }
+        .box-page h1 { color: #fff; text-align: center; margin: 0; font-size: 28px; text-shadow: 0 2px 8px rgba(0,0,0,.2); }
+        .box-page .subtitle { color: rgba(255,255,255,0.8); max-width: 860px; margin: 0 auto 20px; font-size: 15px; line-height: 1.6; }
+        .box-grid { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; padding-bottom: 40px; }
+
+        /* 总结卡片 */
+        .summary-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 24px 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.08);
+        }
+        .summary-card h2 {
+            margin: 0 0 16px 0;
+            font-size: 20px;
+            color: #b91c1c;
+        }
+        .summary-card .summary-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-family: Consolas, Courier New, monospace;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .summary-card .sd-row { display: flex; align-items: center; gap: 10px; }
+        .summary-card .sd-color { display: inline-block; width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
+        .summary-card .sd-label { min-width: 60px; font-weight: 700; }
+        .summary-card .sd-desc { color: #666; font-family: Segoe UI, sans-serif; }
+        .summary-card .sd-arrow { color: #bbb; margin: 0 4px; }
+        .summary-card .summary-text {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: #fef2f2;
+            border-radius: 10px;
+            border-left: 4px solid #dc2626;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        /* 属性卡片 */
+        .prop-card { background: #fff; border-radius: 14px; padding: 24px 28px; box-shadow: 0 4px 20px rgba(0,0,0,.08); transition: box-shadow .3s; }
+        .prop-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,.13); }
+        .prop-card .prop-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+        .prop-card .prop-name { font-family: Consolas, Courier New, monospace; font-size: 18px; font-weight: 700; color: #dc2626; background: #fef2f2; padding: 2px 10px; border-radius: 6px; }
+        .prop-card .prop-desc { font-size: 14px; color: #666; }
+        .prop-card .prop-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; align-items: center; }
+        .prop-card .prop-controls label { font-size: 13px; color: #555; display: flex; align-items: center; gap: 4px; }
+        .prop-card .prop-controls select { padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; background: #fff; cursor: pointer; }
+        .prop-card .prop-controls input[type="range"] { padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; background: #fff; width: 120px; cursor: pointer; }
+        .prop-card .value-label { font-family: Consolas, Courier New, monospace; font-size: 12px; color: #888; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; }
+        .prop-card .code-snippet { font-family: Consolas, Courier New, monospace; font-size: 13px; color: #1e293b; background: #f1f5f9; padding: 8px 12px; border-radius: 6px; margin-top: 10px; border-left: 3px solid #dc2626; }
+
+        /* 盒子模型可视化演示 */
+        .box-visual { position: relative; padding: 40px; margin: 20px; background: transparent; }
+        .box-visual-inner { position: relative; width: 200px; height: 200px; margin: 0 auto; transition: all .3s; }
+        .box-margin { position: absolute; inset: 0; background: rgba(251,191,36,0.25); border: 2px dashed #f59e0b; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all .3s; }
+        .box-border { position: absolute; inset: 0; background: transparent; border: 4px solid #dc2626; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all .3s; }
+        .box-padding { position: absolute; inset: 0; background: rgba(34,197,94,0.2); border: 2px dashed #22c55e; border-radius: 3px; display: flex; align-items: center; justify-content: center; transition: all .3s; }
+        .box-content { position: absolute; inset: 0; background: rgba(59,130,246,0.25); border: 2px solid #3b82f6; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #1e40af; font-weight: 600; transition: all .3s; }
+
+        .box-legend { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 20px; }
+        .box-legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #555; }
+        .box-legend-color { width: 14px; height: 14px; border-radius: 3px; }
+
+        /* 实时预览卡片 */
+        .preview-card { background: #fff; border-radius: 14px; padding: 24px 28px; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+        .preview-card h2 { margin: 0 0 12px 0; font-size: 20px; color: #b91c1c; }
+        .preview-area { padding: 16px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; overflow: hidden; }
+        .preview-box {
+            background: #3b82f6;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            transition: all .3s;
+        }
+
+        @media (max-width: 600px) {
+            .box-page .page-header { flex-direction: column; align-items: flex-start; }
+            .prop-card { padding: 18px 16px; }
+            .prop-card .prop-controls { flex-direction: column; align-items: flex-start; }
+            .summary-card .sd-row { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body class="box-page">
+    <div class="page-header">
+        <a href="index.html" class="back-btn">← 返回</a>
+        <h1>CSS 盒子模型</h1>
+    </div>
+    <p class="subtitle">CSS 盒子模型（Box Model）是网页布局的核心概念。每个 HTML 元素都可以看作一个矩形盒子，由内到外依次为：内容 → 内边距 → 边框 → 外边距。轮廓则悬浮在边框之外。</p>
+
+    <div class="box-grid">
+
+        <!-- 总结卡片 -->
+        <div class="summary-card">
+            <h2>关系总结</h2>
+            <div class="summary-diagram">
+                <div class="sd-row">
+                    <span class="sd-color" style="background:#93c5fd;"></span>
+                    <span class="sd-label">Content</span>
+                    <span class="sd-arrow">→</span>
+                    <span class="sd-desc">内容区域，显示文本、图片等实际内容</span>
+                </div>
+                <div class="sd-row">
+                    <span class="sd-color" style="background:#86efac;"></span>
+                    <span class="sd-label">Padding</span>
+                    <span class="sd-arrow">→</span>
+                    <span class="sd-desc">内边距，内容与边框之间的间距，撑大盒子但保持内容干净</span>
+                </div>
+                <div class="sd-row">
+                    <span class="sd-color" style="background:#fca5a5;"></span>
+                    <span class="sd-label">Border</span>
+                    <span class="sd-arrow">→</span>
+                    <span class="sd-desc">边框，包裹内容和内边距，盒子的"墙壁"</span>
+                </div>
+                <div class="sd-row">
+                    <span class="sd-color" style="background:#fde68a;"></span>
+                    <span class="sd-label">Margin</span>
+                    <span class="sd-arrow">→</span>
+                    <span class="sd-desc">外边距，边框之外的间距，控制盒子与周围元素的距离</span>
+                </div>
+                <div class="sd-row">
+                    <span class="sd-color" style="background:#d8b4fe;"></span>
+                    <span class="sd-label">Outline</span>
+                    <span class="sd-arrow">→</span>
+                    <span class="sd-desc">轮廓，绘制在边框之外但不占用空间，不影响布局</span>
+                </div>
+            </div>
+            <div class="summary-text">
+                <strong>从内到外的层次：</strong>Content 在最里面 → Padding 包裹 Content，创造呼吸空间 → Border 是盒子的边界墙 → Margin 在 Border 之外，决定盒子与其他元素的距离。<br><br>
+                <strong>关键理解：</strong>Padding 和 Border 会<strong>撑大盒子</strong>的占地面积，Margin 则是在盒子之外推开其他元素。而 Outline 比较特殊——它画在 Border 外面，但<strong>不占空间</strong>，不会影响布局。<br><br>
+                <strong>公式：</strong>盒子总宽度 = width + padding-left + padding-right + border-left + border-right<br>
+                盒子总高度 = height + padding-top + padding-bottom + border-top + border-bottom<br>
+                （Margin 不计入盒子尺寸，只影响与其他元素的间距）
+            </div>
+        </div>
+
+        <!-- 盒子模型可视化图 -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">可视化层次</span>
+                <span class="prop-desc">滑动下方滑块调整各层大小</span>
+            </div>
+            <div class="box-visual">
+                <div class="box-visual-inner" id="box-visual">
+                    <div class="box-margin" id="vm-margin" style="margin:20px;">
+                        <div class="box-border" id="vm-border" style="border-width:4px;inset:0;">
+                            <div class="box-padding" id="vm-padding" style="padding:20px;">
+                                <div class="box-content" id="vm-content" style="width:80px;height:80px;">
+                                    内容
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prop-controls" style="justify-content:center;">
+                <label>Margin：<input type="range" min="0" max="40" value="20" class="box-layer-range" data-layer="margin" data-unit="px"></label>
+                <label>Border：<input type="range" min="0" max="16" value="4" class="box-layer-range" data-layer="border" data-unit="px"></label>
+                <label>Padding：<input type="range" min="0" max="40" value="20" class="box-layer-range" data-layer="padding" data-unit="px"></label>
+            </div>
+            <div class="box-legend">
+                <div class="box-legend-item"><span class="box-legend-color" style="background:rgba(251,191,36,0.4);border:1px dashed #f59e0b;"></span> Margin</div>
+                <div class="box-legend-item"><span class="box-legend-color" style="background:transparent;border:3px solid #dc2626;"></span> Border</div>
+                <div class="box-legend-item"><span class="box-legend-color" style="background:rgba(34,197,94,0.3);border:1px dashed #22c55e;"></span> Padding</div>
+                <div class="box-legend-item"><span class="box-legend-color" style="background:rgba(59,130,246,0.3);border:2px solid #3b82f6;"></span> Content</div>
+            </div>
+        </div>
+
+        <!-- 实时预览 -->
+        <div class="preview-card">
+            <h2>综合预览</h2>
+            <div class="preview-area">
+                <div class="preview-box" id="preview-box" style="width:120px;height:80px;padding:10px;border:3px solid #b91c1c;margin:10px;outline:none;">
+                    盒子内容
+                </div>
+            </div>
+            <div class="prop-controls" style="margin-top:12px;">
+                <label>宽度：<input type="range" min="60" max="250" value="120" class="box-preview-range" data-preview="width" data-unit="px"></label>
+                <label>高度：<input type="range" min="40" max="180" value="80" class="box-preview-range" data-preview="height" data-unit="px"></label>
+                <label>Padding：<input type="range" min="0" max="40" value="10" class="box-preview-range" data-preview="padding" data-unit="px"></label>
+                <label>Border：<input type="range" min="0" max="16" value="3" class="box-preview-range" data-preview="borderWidth" data-unit="px"></label>
+                <label>Margin：<input type="range" min="0" max="50" value="10" class="box-preview-range" data-preview="margin" data-unit="px"></label>
+            </div>
+            <div class="code-snippet">width: 120px; height: 80px; padding: 10px; border: 3px solid #b91c1c; margin: 10px;</div>
+        </div>
+
+        <!-- Content -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">Content</span>
+                <span class="prop-desc">内容区域 — 文本、图片等实际内容所在</span>
+            </div>
+            <div style="padding:16px;background:#eff6ff;border-radius:10px;border:2px solid #93c5fd;text-align:center;font-size:16px;color:#1e40af;">
+                这是内容区域，可以放文字、图片等
+            </div>
+            <div class="prop-controls">
+                <label>宽度：<input type="range" min="100" max="400" value="200" class="range-slider" data-target="content-box" data-prop="width" data-unit="px"></label>
+                <label>高度：<input type="range" min="30" max="120" value="60" class="range-slider" data-target="content-box" data-prop="height" data-unit="px"></label>
+                <span class="value-label" id="content-size">200px × 60px</span>
+            </div>
+            <div class="code-snippet">width: 200px; height: 60px;</div>
+        </div>
+        <div style="display:none;" id="content-box" class="hidden-helper"></div>
+
+        <!-- Padding -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">Padding</span>
+                <span class="prop-desc">内边距 — 内容与边框之间的间距</span>
+            </div>
+            <div class="prop-demo" style="overflow:hidden;">
+                <div id="padding-demo" style="background:#dcfce7;border:3px solid #22c55e;padding:10px;transition:all .3s;">
+                    这段文字四周有 padding，文字离边框的距离就是 padding 的效果。<br>
+                    增大 padding 会让盒子变大，但文字本身不动，只是离边框更远了。
+                </div>
+            </div>
+            <div class="prop-controls">
+                <label>Padding：<input type="range" min="0" max="40" value="10" class="range-slider" data-target="padding-demo" data-prop="padding" data-unit="px"></label>
+                <span class="value-label" data-for="padding-demo">10px</span>
+            </div>
+            <div class="code-snippet">padding: <span data-code-for="padding-demo">10px</span>;</div>
+        </div>
+
+        <!-- Border -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">Border</span>
+                <span class="prop-desc">边框 — 盒子的"墙壁"，包裹内容和内边距</span>
+            </div>
+            <div class="prop-demo">
+                <div id="border-demo" style="background:#fef2f2;border:3px solid #dc2626;padding:10px;transition:all .3s;text-align:center;">
+                    边框可以是不同样式、宽度和颜色
+                </div>
+            </div>
+            <div class="prop-controls">
+                <label>宽度：<input type="range" min="0" max="16" value="3" class="range-slider" data-target="border-demo" data-prop="borderWidth" data-unit="px"></label>
+                <label>样式：
+                    <select id="border-style-select">
+                        <option value="solid">solid（实线）</option>
+                        <option value="dashed">dashed（虚线）</option>
+                        <option value="dotted">dotted（点线）</option>
+                        <option value="double">double（双线）</option>
+                        <option value="ridge">ridge（脊线）</option>
+                        <option value="groove">groove（凹槽）</option>
+                    </select>
+                </label>
+                <span class="value-label" id="border-val">3px solid #dc2626</span>
+            </div>
+            <div class="code-snippet">border: <span id="border-code">3px solid #dc2626</span>;</div>
+        </div>
+
+        <!-- Margin -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">Margin</span>
+                <span class="prop-desc">外边距 — 边框之外的间距，控制盒子间的距离</span>
+            </div>
+            <div style="background:#fefce8;border:2px dashed #f59e0b;border-radius:10px;padding:16px;transition:all .3s;">
+                <div style="background:#f59e0b;color:#fff;padding:8px 12px;border-radius:6px;text-align:center;transition:all .3s;" id="margin-demo">
+                    盒子 A（调整我的 margin，看下面盒子 B 离我多远）
+                </div>
+                <div style="background:#f59e0b;color:#fff;padding:8px 12px;border-radius:6px;text-align:center;margin-top:10px;transition:all .3s;" id="margin-demo-b">
+                    盒子 B
+                </div>
+            </div>
+            <div class="prop-controls">
+                <label>Margin（底部）：<input type="range" min="0" max="50" value="10" class="range-slider" data-target="margin-demo" data-prop="marginBottom" data-unit="px"></label>
+                <span class="value-label" data-for="margin-demo">10px</span>
+            </div>
+            <div class="code-snippet">margin-bottom: <span data-code-for="margin-demo">10px</span>;</div>
+        </div>
+
+        <!-- Outline -->
+        <div class="prop-card">
+            <div class="prop-header">
+                <span class="prop-name">Outline</span>
+                <span class="prop-desc">轮廓 — 绘制在边框外但不占用空间，不影响布局</span>
+            </div>
+            <div class="prop-demo">
+                <div id="outline-demo" style="background:#f3e8ff;border:3px solid #9333ea;padding:16px;text-align:center;outline:6px solid rgba(147,51,234,0.3);transition:all .3s;">
+                    注意看圆圈外的紫色轮廓 &amp; 跟红色边框的区别<br>
+                    轮廓不占空间，不会挤开周围元素
+                </div>
+            </div>
+            <div class="prop-controls">
+                <label>轮廓宽度：<input type="range" min="0" max="16" value="6" class="range-slider" data-target="outline-demo" data-prop="outlineWidth" data-unit="px"></label>
+                <label>偏移：
+                    <input type="range" min="-8" max="12" value="0" id="outline-offset-range">
+                </label>
+                <span class="value-label" id="outline-val">6px</span>
+            </div>
+            <div class="code-snippet">outline: <span id="outline-code">6px solid rgba(147,51,234,0.3)</span>; outline-offset: <span id="outline-offset-code">0px</span>;</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Range slider (通用)
+        document.querySelectorAll('.range-slider').forEach(function(slider) {
+            slider.addEventListener('input', function() {
+                var target = document.getElementById(this.dataset.target);
+                var prop = this.dataset.prop;
+                var unit = this.dataset.unit;
+                var v = this.value + unit;
+                target.style[prop] = v;
+                var label = document.querySelector('[data-for="' + this.dataset.target + '"]');
+                if (label) label.textContent = v;
+                var code = document.querySelector('[data-code-for="' + this.dataset.target + '"]');
+                if (code) code.textContent = v;
+            });
+        });
+
+        // 可视化层次控制
+        document.querySelectorAll('.box-layer-range').forEach(function(slider) {
+            slider.addEventListener('input', function() {
+                var layer = this.dataset.layer;
+                var val = this.value;
+                var el = document.getElementById('vm-' + layer);
+                if (layer === 'margin') {
+                    el.style.margin = val + 'px';
+                } else if (layer === 'border') {
+                    el.style.borderWidth = val + 'px';
+                } else if (layer === 'padding') {
+                    el.style.padding = val + 'px';
+                }
+            });
+        });
+
+        // 综合预览控制
+        document.querySelectorAll('.box-preview-range').forEach(function(slider) {
+            slider.addEventListener('input', function() {
+                var prop = this.dataset.preview;
+                var val = this.value + (this.dataset.unit || '');
+                document.getElementById('preview-box').style[prop] = val;
+                updatePreviewCode();
+            });
+        });
+
+        function updatePreviewCode() {
+            var pb = document.getElementById('preview-box');
+            var ranges = document.querySelectorAll('.box-preview-range');
+            var parts = [];
+            ranges.forEach(function(r) {
+                parts.push(r.dataset.preview + ': ' + r.value + (r.dataset.unit || ''));
+            });
+            var code = parts.join('; ') + ';';
+            var snippet = document.querySelector('.preview-card .code-snippet');
+            if (snippet) snippet.textContent = code;
+        }
+        updatePreviewCode();
+
+        // border style select
+        document.getElementById('border-style-select').addEventListener('change', function() {
+            var demo = document.getElementById('border-demo');
+            demo.style.borderStyle = this.value;
+            var w = demo.style.borderWidth || '3px';
+            var val = w + ' ' + this.value + ' #dc2626';
+            document.getElementById('border-val').textContent = val;
+            document.getElementById('border-code').textContent = val;
+        });
+
+        // outline offset
+        document.getElementById('outline-offset-range').addEventListener('input', function() {
+            var demo = document.getElementById('outline-demo');
+            var v = this.value;
+            demo.style.outlineOffset = v + 'px';
+            document.getElementById('outline-offset-code').textContent = v + 'px';
+        });
+
+        // content size display
+        var contentWidthRange = document.querySelector('[data-target="content-box"][data-prop="width"]');
+        var contentHeightRange = document.querySelector('[data-target="content-box"][data-prop="height"]');
+        if (contentWidthRange && contentHeightRange) {
+            function updateContentSize() {
+                document.getElementById('content-size').textContent = contentWidthRange.value + 'px x ' + contentHeightRange.value + 'px';
+            }
+            contentWidthRange.addEventListener('input', updateContentSize);
+            contentHeightRange.addEventListener('input', updateContentSize);
+        }
+
+        // padding demo show the content area under it
+        document.querySelector('[data-target="padding-demo"]').addEventListener('input', function() {
+            var v = this.value + this.dataset.unit;
+            var codeSpan = document.querySelector('[data-code-for="padding-demo"]');
+            if (codeSpan) codeSpan.textContent = v;
+        });
+    </script>
+</body>
+</html>
