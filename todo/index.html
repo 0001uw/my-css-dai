@@ -4,7 +4,7 @@
     <meta charset="UTF-8"> <!-- 编码，支持中文 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 移动端适配 -->
     <title>待办清单</title> <!-- 标签页标题 -->
-    <link rel="stylesheet" href="style.css"> <!-- 引入 CSS：style.css -->
+    <link rel="stylesheet" href="css/style.css"> <!-- 引入 CSS：style.css -->
 </head>
 <body> <!-- → CSS: body {} 页面背景、居中布局 -->
 
@@ -178,11 +178,11 @@
         setInterval(updateClock, 1000); // 每 1000 毫秒（1 秒）执行一次
     </script>
 
-<a href=text.html class=nav-text-btn>文本</a>
-<span class=nav-btn-wrapper style=left:120px>
-  <a href=box.html class=nav-text-btn>盒子模型</a>
+<a href=pages/text.html class=nav-text-btn>文本</a>
+<div class=nav-btn-wrapper style=left:120px>
+  <a href=pages/box.html class=nav-text-btn>盒子模型</a>
   <span class=tooltip>盒子<span class=arrow></span></span>
-</span>
-<a href=selector.html class=nav-text-btn style=left:240px>选择器</a>
+</div>
+<a href=pages/selector.html class=nav-text-btn style=left:240px>选择器</a>
 </body>
 </html>

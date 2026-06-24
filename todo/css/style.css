@@ -194,6 +194,7 @@ button:hover {
 .nav-btn-wrapper {
     position: fixed;
     bottom: 24px;
+    width: fit-content;
 }
 
 .nav-btn-wrapper .nav-text-btn {
@@ -207,8 +208,9 @@ button:hover {
     visibility: hidden;
     opacity: 0;
     position: absolute;
-    bottom: calc(100% + 8px);  /* 在按钮上方 */
+    bottom: calc(100% + 10px);
     left: 50%;
+    z-index: 200;
     transform: translateX(-50%);
     background: #1e293b;
     color: #fff;
@@ -231,7 +233,8 @@ button:hover {
 }
 
 /* 悬停时显示 tooltip */
-.nav-btn-wrapper:hover .tooltip {
+.nav-btn-wrapper:hover .tooltip,
+.nav-btn-wrapper .nav-text-btn:hover + .tooltip {
     visibility: visible;
     opacity: 1;
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS 选择器对比</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <style>
         body.sel-page {
             background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
@@ -14,10 +14,10 @@
         }
         .sel-page .page-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; max-width: 860px; margin-left: auto; margin-right: auto; }
         .sel-page h1 { color: #fff; text-align: center; margin: 0; font-size: 28px; text-shadow: 0 2px 8px rgba(0,0,0,.2); }
-        .sel-page .subtitle { color: rgba(255,255,255,0.8); max-width: 860px; margin: 0 auto 20px; font-size: 15px; line-height: 1.6; }
+        .sel-page .subtitle { color: rgba(255,255,255,0.8); text-align: center; max-width: 860px; margin: 0 auto 20px; font-size: 15px; line-height: 1.6; }
         .sel-grid { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; padding-bottom: 40px; }
 
-        .card { background: #fff; border-radius: 14px; padding: 24px 28px; box-shadow: 0 4px 20px rgba(0,0,0,.08); transition: box-shadow .3s; }
+        .card { background: #fff; border-radius: 14px; padding: 24px 28px; box-shadow: 0 4px 20px rgba(0,0,0,.08); transition: box-shadow .3s; width: auto; }
         .card:hover { box-shadow: 0 6px 28px rgba(0,0,0,.13); }
         .card h2 { margin: 0 0 16px 0; font-size: 20px; color: #312e81; }
         .card h3 { margin: 16px 0 8px 0; font-size: 16px; color: #4338ca; }
@@ -71,7 +71,7 @@
 </head>
 <body class="sel-page">
     <div class="page-header">
-        <a href="index.html" class="back-btn">← 返回</a>
+        <a href="../index.html" class="back-btn">← 返回</a>
         <h1>CSS 选择器对比</h1>
     </div>
     <p class="subtitle">理解 <code>.marked p</code> 和 <code>p.marked</code> 的区别，是掌握 CSS 选择器的关键一步。</p>
