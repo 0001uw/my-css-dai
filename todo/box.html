@@ -309,6 +309,56 @@
             <div class="code-snippet">outline: <span id="outline-code">6px solid rgba(147,51,234,0.3)</span>; outline-offset: <span id="outline-offset-code">0px</span>;</div>
         </div>
 
+        <!-- CSS 三角形原理 -->
+        <div class="prop-card" id="triangle-card">
+            <div class="prop-header">
+                <span class="prop-name">CSS 三角形原理</span>
+                <span class="prop-desc">提示框中小箭头的构造方法</span>
+            </div>
+            <p style="font-size:14px;line-height:1.8;color:#555;margin-bottom:12px;">
+                鼠标悬停在首页的「盒子模型」按钮上时，出现的提示框下方有一个小三角箭头。
+                这个箭头<strong>不是图片</strong>，而是用 CSS 的 <strong>border（边框）</strong>构造出来的。
+            </p>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+                <div style="flex:1;min-width:200px;">
+                    <h3 style="font-size:15px;margin:0 0 8px 0;color:#b91c1c;">构造过程</h3>
+                    <div class="code-block-demo" style="background:#1e1e2e;color:#cdd6f4;padding:12px 16px;border-radius:8px;font-family:Consolas,monospace;font-size:13px;line-height:1.8;">
+                        <span style="color:#6c7086;">/* 1. 一个宽高为 0 的元素，四周都设边框 */</span>
+                        .arrow {
+                          width: 0; height: 0;
+                          border: 12px solid black;
+                        }
+                        <span style="color:#6c7086;">/* 2. 三边变透明 → 只剩三角形 */</span>
+                        .arrow-down {
+                          border-color: transparent;
+                          border-top-color: black;
+                        }
+                    </div>
+                </div>
+                <div style="flex:1;min-width:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8fafc;border-radius:10px;padding:20px;">
+                    <div style="margin-bottom:20px;text-align:center;">
+                        <strong style="font-size:13px;color:#888;">四个边框都可见</strong>
+                        <div style="width:0;height:0;border:20px solid;border-color:#f87171 #60a5fa #34d399 #fbbf24;margin:10px auto;"></div>
+                        <span style="font-size:11px;color:#999;">红 右蓝 下绿 左黄</span>
+                    </div>
+                    <div style="text-align:center;">
+                        <strong style="font-size:13px;color:#888;">三边透明 → 三角形</strong>
+                        <div style="width:0;height:0;border:20px solid transparent;border-top-color:#1e293b;margin:10px auto;"></div>
+                        <span style="font-size:11px;color:#999;">只保留上边框颜色</span>
+                    </div>
+                </div>
+            </div>
+            <div class="summary-text" style="margin-top:16px;background:#fef2f2;border-radius:10px;padding:14px 18px;border-left:4px solid #dc2626;font-size:14px;line-height:1.8;color:#333;">
+                <strong>原理：</strong>元素的四个边框在交汇处是<strong>斜角</strong>连接的。当元素宽高为 0 时，四边的边框在中心点相遇，每一条边都呈现为三角形。<br><br>
+                <strong>为什么隐藏三边，最后剩下的是三角形？</strong>当左、右、下三边的边框都设为透明时，它们就消失了。只给上边设置颜色，这条边的着色区域刚好是一个<strong>三角形</strong>——剩下三条边的透明区域在视觉上消失，只留下这个有颜色的三角形。<br><br>
+                <strong>改变方向：</strong>
+                <span style="display:inline-block;width:0;height:0;border:6px solid transparent;border-top-color:#b91c1c;vertical-align:middle;margin:0 4px;"></span> border-top-color → 向下
+                <span style="display:inline-block;width:0;height:0;border:6px solid transparent;border-bottom-color:#b91c1c;vertical-align:middle;margin:0 4px;"></span> border-bottom-color → 向上
+                <span style="display:inline-block;width:0;height:0;border:6px solid transparent;border-left-color:#b91c1c;vertical-align:middle;margin:0 4px;"></span> border-left-color → 向右
+                <span style="display:inline-block;width:0;height:0;border:6px solid transparent;border-right-color:#b91c1c;vertical-align:middle;margin:0 4px;"></span> border-right-color → 向左
+            </div>
+        </div>
+
     </div>
 
     <script>

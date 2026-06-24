@@ -189,3 +189,49 @@ button:hover {
     border-color: rgba(255,255,255,0.6);
     transform: scale(1.05);
 }
+
+/* 导航按钮包装器（带 tooltip） */
+.nav-btn-wrapper {
+    position: fixed;
+    bottom: 24px;
+}
+
+.nav-btn-wrapper .nav-text-btn {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* 提示框：默认隐藏，悬停时显示 */
+.nav-btn-wrapper .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: calc(100% + 8px);  /* 在按钮上方 */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 200;
+}
+
+/* 小箭头：用边框构造三角形 */
+.nav-btn-wrapper .tooltip .arrow {
+    position: absolute;
+    top: 100%;         /* 紧贴 tooltip 底部 */
+    left: 50%;
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: #1e293b;  /* 只有上边框有颜色 → 向下三角形 */
+}
+
+/* 悬停时显示 tooltip */
+.nav-btn-wrapper:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
